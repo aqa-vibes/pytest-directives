@@ -1,0 +1,4 @@
+-e .
+
+# For the test suite
+pytest==8.3.5
