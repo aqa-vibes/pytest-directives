@@ -57,6 +57,7 @@ class ABCDirective(ABCRunnable):
         self._items = list(
             map(lambda item: self._target_resolver.to_runnable(item), raw_items)
         )
+        self._run_results = list()
 
     async def run(self, *run_args: str) -> RunResult:
         self._run_args += run_args

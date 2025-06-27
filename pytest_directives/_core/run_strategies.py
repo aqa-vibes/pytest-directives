@@ -22,7 +22,7 @@ class SequenceRunStrategy(ABCRunStrategy):
             await run_item_callback(item)
 
     def is_run_ok(self, items_run_results: Iterable[RunResult]) -> bool:
-        return any(map(lambda item_result: item_result.is_run_ok, items_run_results))
+        return any(map(lambda item_result: item_result.is_ok, items_run_results))
 
 
 class ChainRunStrategy(ABCRunStrategy):
@@ -43,7 +43,7 @@ class ChainRunStrategy(ABCRunStrategy):
                 break
 
     def is_run_ok(self, items_run_results: Iterable[RunResult]) -> bool:
-        return all(map(lambda item_result: item_result.is_run_ok, items_run_results))
+        return all(map(lambda item_result: item_result.is_ok, items_run_results))
 
 
 # todo add note
@@ -79,5 +79,5 @@ class ParallelRunStrategy(ABCRunStrategy):
         chunk_coroutines = [run_item_callback(item) for item in chunk_items]
         await asyncio.gather(*chunk_coroutines)
 
-    def is_run_ok(self, results: Iterable[RunResult]) -> bool:
-        return all(map(lambda x: x.is_run_ok, results))
+    def is_run_ok(self, items_run_results: Iterable[RunResult]) -> bool:
+        return all(map(lambda item_result: item_result.is_ok, items_run_results))
