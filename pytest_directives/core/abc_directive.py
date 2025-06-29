@@ -1,7 +1,8 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import Iterable, TypeVar, Callable, Coroutine, Any
+from dataclasses import dataclass, field
+from pprint import pprint
+from typing import Iterable, TypeVar, Callable, Coroutine, Any, Awaitable
 
 Target = TypeVar("Target")
 
@@ -19,6 +20,16 @@ class ABCTargetResolver(ABC):
 @dataclass
 class RunResult:
     is_ok: bool
+    stdout: list[str] = field(default_factory=list)
+    stderr: list[str] = field(default_factory=list)
+
+    def __repr__(self):
+        return (
+            f'RunResult(is_ok={self.is_ok}'
+            f'          stdout={pprint(self.stdout)},'
+            f'          stderr={pprint(self.stderr)}'
+            ')'
+        )
 
 
 class ABCRunnable:
@@ -31,7 +42,7 @@ class ABCRunStrategy:
     async def run(
         self,
         items: list[ABCRunnable],
-        run_item_callback: Callable[[ABCRunnable], Coroutine[Any, Any, RunResult]]
+        run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]]
     ) -> None: ...
 
     @abstractmethod

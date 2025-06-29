@@ -1,12 +1,13 @@
 import asyncio
 import inspect
 import logging
+from asyncio import StreamReader
 from pathlib import Path
 from types import ModuleType, FunctionType, MethodType
 from typing import Union, Callable, TypeAlias
 
-from ._core.abc_directive import ABCRunnable, ABCTargetResolver, ABCDirective, RunResult, ABCRunStrategy
-from ._core.run_strategies import SequenceRunStrategy, ChainRunStrategy, ParallelRunStrategy
+from .core.abc_directive import ABCRunnable, ABCTargetResolver, ABCDirective, RunResult, ABCRunStrategy
+from .core.run_strategies import SequenceRunStrategy, ChainRunStrategy, ParallelRunStrategy
 from ._pytest_hardcode import ExitCode
 
 TestTargetType: TypeAlias = Union[ModuleType, FunctionType, MethodType, Callable]
@@ -14,26 +15,24 @@ TestTargetType: TypeAlias = Union[ModuleType, FunctionType, MethodType, Callable
 
 class PytestRunnable(ABCRunnable):
     def __init__(self, test_path: str):
-        self._test_path = test_path
         super().__init__()
+        self._test_path = test_path
+
 
     async def run(self, *run_args: str) -> RunResult:
         """Run test item in another process, wait until done and collect results"""
         logging.debug(f"Run test from directive {self.__class__.__name__}: {self._test_path}")
         process = await asyncio.create_subprocess_exec(
-            "pytest", *run_args, self._test_path, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+            "pytest", self._test_path, *run_args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
 
-        # todo another way to detect that process stop
-        while True:
-            stdout_line = await process.stdout.readline()  # type: ignore[union-attr]
-            stderr_line = await process.stderr.readline()  # type: ignore[union-attr]
-            if stdout_line:
-                logging.info(stdout_line.decode().rstrip())
-            elif stderr_line:
-                logging.error(stderr_line.decode().rstrip())
-            else:
-                break
+        process_stdout: list[str] = []
+        process_stderr: list[str] = []
+
+        await asyncio.gather(
+            self.read_stream(process.stdout, process_stdout, logging.INFO),
+            self.read_stream(process.stderr, process_stderr, logging.INFO)
+        )
 
         await process.wait()
 
@@ -43,7 +42,19 @@ class PytestRunnable(ABCRunnable):
         else:
             is_ok = True
             logging.debug("Tests ends without errors")
-        return RunResult(is_ok=is_ok)
+        return RunResult(is_ok=is_ok, stdout=process_stdout, stderr=process_stderr)
+
+    @staticmethod
+    async def read_stream(stream: StreamReader, collector: list, log_level) -> None:
+        while True:
+            line = await stream.readline()
+            if not line:
+                break
+            decoded = line.decode().rstrip()
+            collector.append(decoded)
+            logging.log(log_level, decoded)
+            for handler in logging.getLogger().handlers:
+                handler.flush()
 
 
 class PytestResolver(ABCTargetResolver):
@@ -73,6 +84,7 @@ class ABCPytestDirective(ABCDirective):
         run_strategy: ABCRunStrategy,
         run_args: tuple[str, ...] = tuple(),
     ):
+        # run_args = (*run_args, '-c NUL')
         super().__init__(
             *raw_items,
             run_strategy=run_strategy,

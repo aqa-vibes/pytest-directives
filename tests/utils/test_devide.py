@@ -2,7 +2,7 @@ from typing import Iterable
 
 import pytest
 
-from pytest_directives._core.utils.devide import divide
+from pytest_directives.core.utils.devide import divide
 
 
 @pytest.mark.parametrize("count_parts, iterable, expected", [
