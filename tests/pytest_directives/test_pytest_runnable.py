@@ -8,7 +8,7 @@ from tests.pytest_directives.conftest import PathTests
 
 async def test_success_run():
     pytest_runnable = PytestRunnable(
-        test_path=str(PathTests.test_function.resolve())
+        test_path=str(PathTests.test_function)
     )
 
     run_result = await pytest_runnable.run()
@@ -25,7 +25,7 @@ async def test_success_run():
 )
 async def test_not_success_run(test_path: Path):
     pytest_runnable = PytestRunnable(
-        test_path=str(test_path.resolve())
+        test_path=str(test_path)
     )
 
     run_result = await pytest_runnable.run()

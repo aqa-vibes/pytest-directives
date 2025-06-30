@@ -7,7 +7,7 @@ from pytest_directives.core.run_strategies import ChainRunStrategy
 from tests._core.conftest import RunnableSpec, MockRunnable
 
 
-def test_chain_run_strategy_stops_on_first_fail(
+def test_chain_stops_on_first_fail(
     make_items: Callable[[list[RunnableSpec]], list[MockRunnable]],
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
@@ -23,7 +23,7 @@ def test_chain_run_strategy_stops_on_first_fail(
         RunnableSpec(True, "c", 0)
     ])
     strategy = ChainRunStrategy()
-    asyncio.run(strategy.run(items, run_item_callback))
+    asyncio.run(strategy.run(list(items), run_item_callback))
 
     assert items[0].run_called
     assert items[1].run_called
@@ -31,7 +31,7 @@ def test_chain_run_strategy_stops_on_first_fail(
 
     assert not strategy.is_run_ok(run_results)
 
-def test_chain_run_strategy_all_success(
+def test_chain_all_success(
     make_items: Callable[[list[RunnableSpec]], list[MockRunnable]],
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
@@ -46,7 +46,7 @@ def test_chain_run_strategy_all_success(
     ])
 
     strategy = ChainRunStrategy()
-    asyncio.run(strategy.run(items, run_item_callback))
+    asyncio.run(strategy.run(list(items), run_item_callback))
 
     assert all(item.run_called for item in items)
 

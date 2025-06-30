@@ -30,8 +30,8 @@ class PytestRunnable(ABCRunnable):
         process_stderr: list[str] = []
 
         await asyncio.gather(
-            self.read_stream(process.stdout, process_stdout, logging.INFO),
-            self.read_stream(process.stderr, process_stderr, logging.INFO)
+            self.read_stream(process.stdout, process_stdout, logging.INFO),     # type: ignore[arg-type]
+            self.read_stream(process.stderr, process_stderr, logging.INFO)      # type: ignore[arg-type]
         )
 
         await process.wait()
@@ -57,13 +57,13 @@ class PytestRunnable(ABCRunnable):
                 handler.flush()
 
 
-class PytestResolver(ABCTargetResolver):
+class PytestResolver(ABCTargetResolver[TestTargetType]):
 
     def _resolve_target(self, target: TestTargetType) -> PytestRunnable:
         return PytestRunnable(test_path=self._get_path(target))
 
     @staticmethod
-    def _get_path(target: TestTargetType):
+    def _get_path(target: TestTargetType) -> str:
         """Get full path to run tests in pytest"""
         path = inspect.getfile(target)
         if path.endswith("__init__.py"):
@@ -72,19 +72,19 @@ class PytestResolver(ABCTargetResolver):
         path = str(Path(path))
 
         if not isinstance(target, ModuleType):
-            path += f"::{target.__name__}"
+            pytest_test_name = target.__qualname__.replace('.', '::')
+            path += f'::{pytest_test_name}'
 
         return path
 
 
-class ABCPytestDirective(ABCDirective):
+class ABCPytestDirective(ABCDirective[TestTargetType]):
     def __init__(
         self,
         *raw_items: ABCRunnable | TestTargetType,
         run_strategy: ABCRunStrategy,
         run_args: tuple[str, ...] = tuple(),
     ):
-        # run_args = (*run_args, '-c NUL')
         super().__init__(
             *raw_items,
             run_strategy=run_strategy,

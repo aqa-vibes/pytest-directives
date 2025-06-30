@@ -5,7 +5,6 @@ from pytest_directives.pytest_directives import sequence, chain, parallel
 
 def example_flow():
     return sequence(
-
     )
 
 

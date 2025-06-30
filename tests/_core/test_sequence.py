@@ -7,7 +7,7 @@ from pytest_directives.core.run_strategies import SequenceRunStrategy
 from tests._core.conftest import RunnableSpec, MockRunnable
 
 
-def test_sequence_run_strategy_success(
+def test_sequence_success(
     make_items: Callable[[list[RunnableSpec]], list[MockRunnable]],
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
@@ -18,14 +18,14 @@ def test_sequence_run_strategy_success(
     """
     items = make_items([RunnableSpec(True, "a", 0), RunnableSpec(False, "b", 0), RunnableSpec(True, "c", 0)])
     strategy = SequenceRunStrategy()
-    asyncio.run(strategy.run(items, run_item_callback))
+    asyncio.run(strategy.run(list(items), run_item_callback))
 
     assert all(item.run_called for item in items)
 
     assert strategy.is_run_ok(run_results)
 
 
-def test_sequence_run_strategy_all_fail(
+def test_sequence_all_fail(
     make_items: Callable[[list[RunnableSpec]], list[MockRunnable]],
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
@@ -36,6 +36,6 @@ def test_sequence_run_strategy_all_fail(
     """
     items = make_items([RunnableSpec(False, "a", 0), RunnableSpec(False, "b", 0)])
     strategy = SequenceRunStrategy()
-    asyncio.run(strategy.run(items, run_item_callback))
+    asyncio.run(strategy.run(list(items), run_item_callback))
 
     assert not strategy.is_run_ok(run_results)

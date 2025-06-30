@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Sequence
 
 import pytest
 
@@ -14,7 +14,7 @@ from pytest_directives.core.utils.devide import divide
     pytest.param(3, (x for x in range(6)), [[0, 1], [2, 3], [4, 5]], id="generator_input"),
     pytest.param(5, [1, 2, 3], [[1], [2], [3], [], []], id="more_parts_than_elements"),
 ])
-def test_divide_functionality(count_parts: int, iterable: Iterable, expected: Iterable):
+def test_divide_functionality(count_parts: int, iterable: Sequence, expected: Sequence):
     result = divide(count_parts, iterable)
     assert [list(part) for part in result] == expected
 
@@ -23,7 +23,7 @@ def test_divide_functionality(count_parts: int, iterable: Iterable, expected: It
     pytest.param(0, [1, 2, 3], id="count_parts_zero"),
     pytest.param(-1, [1, 2, 3], id="count_parts_negative"),
 ])
-def test_divide_invalid_count_parts(count_parts: int, iterable: Iterable):
+def test_divide_invalid_count_parts(count_parts: int, iterable: Sequence):
     with pytest.raises(ValueError, match="'count_parts' must be at least 1"):
         divide(count_parts, iterable)
 
@@ -32,6 +32,6 @@ def test_divide_invalid_count_parts(count_parts: int, iterable: Iterable):
     pytest.param(2, 123, id="non_iterable_input"),
     pytest.param(2, None, id="none_input"),
 ])
-def test_divide_non_iterable_input(count_parts: int, iterable: Iterable):
+def test_divide_non_iterable_input(count_parts: int, iterable: Sequence):
     with pytest.raises(TypeError):
         divide(count_parts, iterable)

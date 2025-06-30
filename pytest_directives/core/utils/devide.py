@@ -1,9 +1,9 @@
-from typing import TypeVar, Iterable, Iterator
+from typing import TypeVar, Sequence, Iterator
 
 A = TypeVar("A")
 
 
-def divide(count_parts: int, iterable: Iterable[A]) -> list[Iterator[A]]:
+def divide(count_parts: int, iterable: Sequence[A]) -> list[Iterator[A]]:
     """
     Divide iterable to parts with same size
 
@@ -20,7 +20,7 @@ def divide(count_parts: int, iterable: Iterable[A]) -> list[Iterator[A]]:
     except TypeError:
         seq = tuple(iterable)
     else:
-        seq = iterable
+        seq = iterable      # type: ignore[assignment]
 
     q, r = divmod(len(seq), count_parts)
 

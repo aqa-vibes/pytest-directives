@@ -2,12 +2,12 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pprint import pprint
-from typing import Iterable, TypeVar, Callable, Coroutine, Any, Awaitable
+from typing import Iterable, TypeVar, Callable, Coroutine, Any, Awaitable, Generic
 
 Target = TypeVar("Target")
 
 
-class ABCTargetResolver(ABC):
+class ABCTargetResolver(ABC, Generic[Target]):
     def to_runnable(self, target: ABCRunnable | Target) -> ABCRunnable:
         if isinstance(target, ABCRunnable):
             return target
@@ -49,7 +49,7 @@ class ABCRunStrategy:
     def is_run_ok(self, items_run_results: Iterable[RunResult]) -> bool: ...
 
 
-class ABCDirective(ABCRunnable):
+class ABCDirective(ABCRunnable, Generic[Target]):
     _items: list[ABCRunnable]
     _run_results: list[RunResult]
 
