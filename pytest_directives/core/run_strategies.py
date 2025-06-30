@@ -1,14 +1,14 @@
 import asyncio
 import os
-from typing import Iterable, Callable, Coroutine, Any, Awaitable
+from collections.abc import Awaitable, Iterable
+from typing import Callable
 
-from .abc_directive import ABCRunStrategy, RunResult, ABCRunnable
+from .abc_directive import ABCRunnable, ABCRunStrategy, RunResult
 from .utils.devide import divide
 
 
 class SequenceRunStrategy(ABCRunStrategy):
-    """
-    * Runs sequentially
+    """* Runs sequentially
     * Ignores errors
     * Result is_ok if at least one item passes
     """
@@ -26,8 +26,7 @@ class SequenceRunStrategy(ABCRunStrategy):
 
 
 class ChainRunStrategy(ABCRunStrategy):
-    """
-    * Runs sequentially
+    """* Runs sequentially
     * Stop on first error
     * Result is_ok if all items passed
     """
@@ -51,8 +50,7 @@ DIRECTIVE_PARALLEL_PROCESSES = int(os.environ.get('DIRECTIVE_PARALLEL_PROCESSES'
 
 
 class ParallelRunStrategy(ABCRunStrategy):
-    """
-    * Runs parallel
+    """* Runs parallel
     * Ignores errors
     * Result is_ok if all items passes
     """

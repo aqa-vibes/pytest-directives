@@ -1,10 +1,10 @@
 import asyncio
-from typing import Callable, Awaitable
+from collections.abc import Awaitable
+from typing import Callable
 
 from pytest_directives.core.abc_directive import ABCRunnable, RunResult
 from pytest_directives.core.run_strategies import SequenceRunStrategy
-
-from tests._core.conftest import RunnableSpec, MockRunnable
+from tests._core.conftest import MockRunnable, RunnableSpec
 
 
 def test_sequence_success(
@@ -12,8 +12,7 @@ def test_sequence_success(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """
-    Test that SequenceRunStrategy returns success if at least one item succeeds.
+    """Test that SequenceRunStrategy returns success if at least one item succeeds.
     All items should be run, and the result should be successful if any item passes.
     """
     items = make_items([RunnableSpec(True, "a", 0), RunnableSpec(False, "b", 0), RunnableSpec(True, "c", 0)])
@@ -30,8 +29,7 @@ def test_sequence_all_fail(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """
-    Test that SequenceRunStrategy returns failure if all items fail.
+    """Test that SequenceRunStrategy returns failure if all items fail.
     All items should be run, and the result should be failure if none succeed.
     """
     items = make_items([RunnableSpec(False, "a", 0), RunnableSpec(False, "b", 0)])

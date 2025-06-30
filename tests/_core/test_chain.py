@@ -1,10 +1,10 @@
 import asyncio
-from typing import Callable, Awaitable
+from collections.abc import Awaitable
+from typing import Callable
 
 from pytest_directives.core.abc_directive import ABCRunnable, RunResult
 from pytest_directives.core.run_strategies import ChainRunStrategy
-
-from tests._core.conftest import RunnableSpec, MockRunnable
+from tests._core.conftest import MockRunnable, RunnableSpec
 
 
 def test_chain_stops_on_first_fail(
@@ -12,8 +12,7 @@ def test_chain_stops_on_first_fail(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """
-    Test that ChainRunStrategy stops execution at the first failed item.
+    """Test that ChainRunStrategy stops execution at the first failed item.
     Only items up to and including the first failure should be run.
     The strategy should return failure if any item fails.
     """
@@ -36,8 +35,7 @@ def test_chain_all_success(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """
-    Test that ChainRunStrategy returns success if all items succeed.
+    """Test that ChainRunStrategy returns success if all items succeed.
     All items should be run and the result should be successful.
     """
     items = make_items([
@@ -50,4 +48,4 @@ def test_chain_all_success(
 
     assert all(item.run_called for item in items)
 
-    assert strategy.is_run_ok(run_results) 
+    assert strategy.is_run_ok(run_results)

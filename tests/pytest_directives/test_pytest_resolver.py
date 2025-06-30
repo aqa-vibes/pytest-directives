@@ -3,11 +3,10 @@ import subprocess
 import pytest
 
 from pytest_directives.pytest_directives import PytestResolver
-
 from tests.pytest_directives.conftest import PathTests
-from tests.pytest_directives.test_data import test_several_functions, test_package
-from tests.pytest_directives.test_data.test_function import test_function
+from tests.pytest_directives.test_data import test_package, test_several_functions
 from tests.pytest_directives.test_data.test_class import TestClass
+from tests.pytest_directives.test_data.test_function import test_function
 
 
 def get_pytest_collect_result(tests_path: str) -> str:

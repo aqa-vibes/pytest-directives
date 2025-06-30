@@ -1,5 +1,5 @@
 import asyncio
-from typing import NamedTuple, Callable
+from typing import Callable, NamedTuple
 
 import pytest
 

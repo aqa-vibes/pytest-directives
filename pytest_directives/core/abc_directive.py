@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
+from collections.abc import Awaitable, Iterable
 from dataclasses import dataclass, field
-from pprint import pprint
-from typing import Iterable, TypeVar, Callable, Coroutine, Any, Awaitable, Generic
+from pprint import pformat
+from typing import Callable, Generic, TypeVar
 
 Target = TypeVar("Target")
 
@@ -23,11 +25,11 @@ class RunResult:
     stdout: list[str] = field(default_factory=list)
     stderr: list[str] = field(default_factory=list)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f'RunResult(is_ok={self.is_ok}'
-            f'          stdout={pprint(self.stdout)},'
-            f'          stderr={pprint(self.stderr)}'
+            f'          stdout={pformat(self.stdout)},'
+            f'          stderr={pformat(self.stderr)}'
             ')'
         )
 
@@ -57,7 +59,7 @@ class ABCDirective(ABCRunnable, Generic[Target]):
         self,
         *raw_items: ABCRunnable | Target,
         run_strategy: ABCRunStrategy,
-        target_resolver: ABCTargetResolver,
+        target_resolver: ABCTargetResolver[Target],
         run_args: tuple[str, ...] = tuple(),
     ):
         self._run_args = run_args

@@ -3,14 +3,24 @@ import inspect
 import logging
 from asyncio import StreamReader
 from pathlib import Path
-from types import ModuleType, FunctionType, MethodType
-from typing import Union, Callable, TypeAlias
+from types import FunctionType, MethodType, ModuleType
+from typing import Callable, TypeAlias, Union, Any
 
-from .core.abc_directive import ABCRunnable, ABCTargetResolver, ABCDirective, RunResult, ABCRunStrategy
-from .core.run_strategies import SequenceRunStrategy, ChainRunStrategy, ParallelRunStrategy
 from ._pytest_hardcode import ExitCode
+from .core.abc_directive import (
+    ABCDirective,
+    ABCRunnable,
+    ABCRunStrategy,
+    ABCTargetResolver,
+    RunResult,
+)
+from .core.run_strategies import (
+    ChainRunStrategy,
+    ParallelRunStrategy,
+    SequenceRunStrategy,
+)
 
-TestTargetType: TypeAlias = Union[ModuleType, FunctionType, MethodType, Callable]
+TestTargetType: TypeAlias = Union[ModuleType, FunctionType, MethodType, Callable[[Any], Any]]
 
 
 class PytestRunnable(ABCRunnable):
@@ -45,7 +55,7 @@ class PytestRunnable(ABCRunnable):
         return RunResult(is_ok=is_ok, stdout=process_stdout, stderr=process_stderr)
 
     @staticmethod
-    async def read_stream(stream: StreamReader, collector: list, log_level) -> None:
+    async def read_stream(stream: StreamReader, collector: list[str], log_level) -> None:        # type: ignore[no-untyped-def]
         while True:
             line = await stream.readline()
             if not line:
@@ -94,6 +104,13 @@ class ABCPytestDirective(ABCDirective[TestTargetType]):
 
 
 class PytestSequenceDirective(ABCPytestDirective):
+    """Pytest Directive
+
+    * Runs sequentially
+    * Ignores errors
+    * Result is_ok if at least one item passes
+    """
+
     def __init__(
         self,
         *raw_items: ABCRunnable | TestTargetType,
@@ -107,6 +124,13 @@ class PytestSequenceDirective(ABCPytestDirective):
 
 
 class PytestChainDirective(ABCPytestDirective):
+    """Pytest Directive
+
+    * Runs sequentially
+    * Stop on first error
+    * Result is_ok if all items passed
+    """
+
     def __init__(
         self,
         *raw_items: ABCRunnable | TestTargetType,
@@ -120,6 +144,13 @@ class PytestChainDirective(ABCPytestDirective):
 
 
 class PytestParallelDirective(ABCPytestDirective):
+    """Pytest Directive
+
+    * Runs parallel
+    * Ignores errors
+    * Result is_ok if all items passes
+    """
+
     def __init__(
         self,
         *raw_items: ABCRunnable | TestTargetType,
