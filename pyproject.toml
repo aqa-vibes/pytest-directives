@@ -6,9 +6,7 @@ readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: Pytest",
-    "Operating System :: POSIX",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: OS Independent",
     "Topic :: Software Development :: Testing",
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Utilities",
