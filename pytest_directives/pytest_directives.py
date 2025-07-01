@@ -24,6 +24,7 @@ TestTargetType: TypeAlias = Union[ModuleType, FunctionType, MethodType, Callable
 
 
 class PytestRunnable(ABCRunnable):
+    """Implement how need to run pytest tests from test_path"""
     def __init__(self, test_path: str):
         super().__init__()
         self._test_path = test_path
@@ -68,7 +69,7 @@ class PytestRunnable(ABCRunnable):
 
 
 class PytestResolver(ABCTargetResolver[TestTargetType]):
-
+    """Create :class:`PytestRunnable` from :class:`TestTargetType` by resolving path to tests"""
     def _resolve_target(self, target: TestTargetType) -> PytestRunnable:
         return PytestRunnable(test_path=self._get_path(target))
 
@@ -89,6 +90,11 @@ class PytestResolver(ABCTargetResolver[TestTargetType]):
 
 
 class ABCPytestDirective(ABCDirective[TestTargetType]):
+    """
+    Base class of Pytest directives.
+
+    Use :class:`PytestResolver` as target_resolver.
+    """
     def __init__(
         self,
         *raw_items: ABCRunnable | TestTargetType,
@@ -104,7 +110,8 @@ class ABCPytestDirective(ABCDirective[TestTargetType]):
 
 
 class PytestSequenceDirective(ABCPytestDirective):
-    """Pytest Directive
+    """
+    Pytest Directive
 
     * Runs sequentially
     * Ignores errors
@@ -124,7 +131,8 @@ class PytestSequenceDirective(ABCPytestDirective):
 
 
 class PytestChainDirective(ABCPytestDirective):
-    """Pytest Directive
+    """
+    Pytest Directive
 
     * Runs sequentially
     * Stop on first error
@@ -144,7 +152,8 @@ class PytestChainDirective(ABCPytestDirective):
 
 
 class PytestParallelDirective(ABCPytestDirective):
-    """Pytest Directive
+    """
+    Pytest Directive
 
     * Runs parallel
     * Ignores errors

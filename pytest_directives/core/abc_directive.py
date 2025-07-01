@@ -10,6 +10,11 @@ Target = TypeVar("Target")
 
 
 class ABCTargetResolver(ABC, Generic[Target]):
+    """
+    Base class for TargetResolver's
+
+    Implement creating ABCRunnable from Target.
+    """
     def to_runnable(self, target: ABCRunnable | Target) -> ABCRunnable:
         if isinstance(target, ABCRunnable):
             return target
@@ -21,6 +26,7 @@ class ABCTargetResolver(ABC, Generic[Target]):
 
 @dataclass
 class RunResult:
+    """Information about run of one item"""
     is_ok: bool
     stdout: list[str] = field(default_factory=list)
     stderr: list[str] = field(default_factory=list)
@@ -35,11 +41,23 @@ class RunResult:
 
 
 class ABCRunnable:
+    """
+    Base class of Composite pattern.
+
+    Implement how item should run.
+    """
     @abstractmethod
     async def run(self,  *run_args: str) -> RunResult: ...
 
 
 class ABCRunStrategy:
+    """
+    Base class of run strategy.
+
+    Implement:
+        1. How should multiple elements be run
+        2. Is the result of running multiple elements satisfactory?
+    """
     @abstractmethod
     async def run(
         self,
@@ -52,6 +70,14 @@ class ABCRunStrategy:
 
 
 class ABCDirective(ABCRunnable, Generic[Target]):
+    """
+    Base class for directives.
+
+    :param raw_items: items, that should be run by that directive
+    :param run_strategy: behavior of directive
+    :param target_resolver: how need to create ABCRunnable from Target
+    :param run_args: additional parameters, that will be added to `run` method of items
+    """
     _items: list[ABCRunnable]
     _run_results: list[RunResult]
 

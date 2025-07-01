@@ -1,7 +1,7 @@
 [project]
 dynamic = ["version"]
 name = "pytest-directives"
-description = "Manage your tests flow"
+description = "Control your tests flow"
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
