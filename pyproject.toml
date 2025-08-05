@@ -69,3 +69,11 @@ lines-after-imports = 2
 files = ["pytest_directives"]
 strict = true
 warn_unreachable = true
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "ruff>=0.12.7",
+]

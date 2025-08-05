@@ -1,8 +1,9 @@
 from pathlib import Path
 
+from tests.pytest_directives import test_data
 
 class PathTests:
-    _test_data = Path('./test_data').absolute()
+    _test_data = Path(test_data.__path__[0])
 
     test_function = _test_data / 'test_function.py'
     test_failure = _test_data / 'test_failure.py'
