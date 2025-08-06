@@ -99,6 +99,9 @@ smoke_flow = sequence(
 ```bash 
   uv sync
 ```
+4. Activate virtual environment
+    - Windows `.venv/Scripts/activate`
+    - Linux `.venv/bin/activate`
 
 # Run tests
 ```bash 
