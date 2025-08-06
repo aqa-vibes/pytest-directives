@@ -16,5 +16,5 @@ jobs:
 
       - name: Run tests
         run: |
-          .venv/bin/activate
+          source .venv/bin/activate
           uv run inv tests
