@@ -91,3 +91,16 @@ smoke_flow = sequence(
 * Can run tests by `import` package, module, function, class or method
 * Run pytest in separate process (say no to sharing fixture) by `asyncio.create_subprocess_exec`
 * Combine directives and implement your tests flow as you need
+
+# Development
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/#pypi)
+2. Clone project
+3. Install requirements 
+```bash 
+  uv sync
+```
+
+# Run tests
+```bash 
+  inv tests
+```

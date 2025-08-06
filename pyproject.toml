@@ -72,6 +72,7 @@ warn_unreachable = true
 
 [dependency-groups]
 dev = [
+    "invoke>=2.2.0",
     "mypy>=1.17.1",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
