@@ -1,6 +1,7 @@
 import asyncio
 import inspect
 import logging
+import sys
 from asyncio import StreamReader
 from pathlib import Path
 from types import FunctionType, MethodType, ModuleType
@@ -34,7 +35,13 @@ class PytestRunnable(ABCRunnable):
         """Run test item in another process, wait until done and collect results"""
         logging.debug(f"Run test from directive {self.__class__.__name__}: {self._test_path}")
         process = await asyncio.create_subprocess_exec(
-            "pytest", self._test_path, *run_args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+            sys.executable,
+            "-m"
+            "pytest",
+            self._test_path,
+            *run_args,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
         )
 
         process_stdout: list[str] = []
