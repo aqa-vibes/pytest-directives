@@ -79,7 +79,7 @@ order-by-type = false
 lines-after-imports = 2
 
 [tool.mypy]
-files = ["pytest_directives"]
+files = ["pytest_directives/"]
 strict = true
 warn_unreachable = true
 
