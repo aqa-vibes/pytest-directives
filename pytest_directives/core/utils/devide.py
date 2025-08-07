@@ -1,11 +1,13 @@
 from collections.abc import Iterator, Sequence
 from typing import TypeVar
 
+
 A = TypeVar("A")
 
 
 def divide(count_parts: int, iterable: Sequence[A]) -> list[Iterator[A]]:
-    """Divide iterable to parts with same size
+    """
+    Divide iterable to parts with same size.
 
     :param count_parts: count of parts
     :param iterable: iterable to divide
