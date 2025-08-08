@@ -2,7 +2,7 @@ name: Linters
 
 on: push
 jobs:
-  test:
+  linters:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
