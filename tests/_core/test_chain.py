@@ -12,7 +12,9 @@ def test_chain_stops_on_first_fail(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """Test that ChainRunStrategy stops execution at the first failed item.
+    """
+    Test that ChainRunStrategy stops execution at the first failed item.
+
     Only items up to and including the first failure should be run.
     The strategy should return failure if any item fails.
     """
@@ -35,7 +37,9 @@ def test_chain_all_success(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """Test that ChainRunStrategy returns success if all items succeed.
+    """
+    Test that ChainRunStrategy returns success if all items succeed.
+
     All items should be run and the result should be successful.
     """
     items = make_items([

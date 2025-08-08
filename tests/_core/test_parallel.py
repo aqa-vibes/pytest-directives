@@ -1,6 +1,6 @@
 import asyncio
-import time
 from collections.abc import Awaitable
+import time
 from typing import Callable
 
 from pytest_directives.core.abc_directive import ABCRunnable, RunResult
@@ -13,7 +13,9 @@ def test_parallel_success(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """Test that ParallelRunStrategy returns success if all items passes.
+    """
+    Test that ParallelRunStrategy returns success if all items passes.
+
     All items should be run in parallel.
     """
     items = make_items([
@@ -33,7 +35,9 @@ def test_parallel_all_fail(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """Test that ParallelRunStrategy returns failure if at least one failed.
+    """
+    Test that ParallelRunStrategy returns failure if at least one failed.
+
     All items should be run in parallel.
     """
     items = make_items([
@@ -54,8 +58,7 @@ def test_parallel_run(
     run_item_callback: Callable[[ABCRunnable], Awaitable[RunResult]],
     run_results: list[RunResult]
 ):
-    """Test that ParallelRunStrategy really run items parallel
-    """
+    """Test that ParallelRunStrategy really run items parallel."""
     items = make_items([
         RunnableSpec(True, "a", 2),
         RunnableSpec(True, "b", 2),

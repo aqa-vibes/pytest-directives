@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from pytest_directives.pytest_directives import PytestRunnable
-from tests.pytest_directives.conftest import PathTests
+from tests.pytest_directives.test_data_paths import PathTests
 
 
 async def test_success_run():

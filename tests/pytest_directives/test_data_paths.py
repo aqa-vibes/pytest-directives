@@ -2,6 +2,7 @@ from pathlib import Path
 
 from tests.pytest_directives import test_data
 
+
 class PathTests:
     _test_data = Path(test_data.__path__[0])
 

@@ -1,2 +1,2 @@
 def test_failure():
-    assert False, 'Oh no..'
+    raise AssertionError('Oh no..')

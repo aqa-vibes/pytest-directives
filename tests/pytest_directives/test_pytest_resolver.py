@@ -1,16 +1,21 @@
 import subprocess
+import sys
 
 import pytest
 
 from pytest_directives.pytest_directives import PytestResolver
-from tests.pytest_directives.conftest import PathTests
 from tests.pytest_directives.test_data import test_package, test_several_functions
 from tests.pytest_directives.test_data.test_class import TestClass
 from tests.pytest_directives.test_data.test_function import test_function
+from tests.pytest_directives.test_data_paths import PathTests
 
 
 def get_pytest_collect_result(tests_path: str) -> str:
-    proc = subprocess.Popen(f"pytest --collect-only {tests_path}", stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        [sys.executable, "-m", "pytest", "--collect-only", tests_path],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE
+    )
     stdout, _ = proc.communicate()
     return stdout.decode("utf-8")
 
