@@ -21,7 +21,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           source .venv/bin/activate
-          uv run pytest --cov=pytest_directives tests/
+          uv run inv tests --cov
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
