@@ -6,7 +6,7 @@ def tests(context: Context, cov: bool = False):
     """Run all unit-tests. Ignore test_data."""
     run_tests_command = "uv run pytest tests/ --ignore=tests/pytest_directives/test_data/"
     if cov:
-        run_tests_command += " --cov=pytest_directives"
+        run_tests_command += " --cov=pytest_directives --cov-branch --cov-report=xml"
     context.run(run_tests_command)
 
 @task
