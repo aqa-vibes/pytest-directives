@@ -1,0 +1,96 @@
+[project]
+version = "0.0.1"
+name = "pytest-directives"
+description = "Control your tests flow"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pytest",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Utilities",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.9"
+dependencies = [
+]
+
+[tool.pytest.ini_options]
+addopts = "-v -l -p no:cacheprovider"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)s] %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff.lint]
+select = [
+    "B",        # bugbear
+    "D",        # pydocstyle
+    "E",        # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "PYI",      # flake8-pyi
+    "UP",       # pyupgrade
+    "RUF",      # ruff
+    "W",        # pycodestyle
+    "T10",      # flake8-debugger
+    "PIE",      # flake8-pie
+    "FA",       # flake8-future-annotations
+    "PGH",      # pygrep-hooks
+    "PLE",      # pylint error
+    "PLW",      # pylint warning
+    "PLR1714",  # Consider merging multiple comparisons
+]
+ignore = [
+    "F401",
+    "D100",     # Missing docstring in public module
+    "D104",     # Missing docstring in public package
+    "D105",     # Missing docstring in magic method
+    "D107",     # Missing docstring in `__init__`
+    "D203",     # incorrect-blank-line-before-class
+    "D212",     # Multi-line docstring summary should start at the first line
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D101",     # Missing docstring in public class
+    "D102",     # Missing docstring in public method
+    "D103",     # Missing docstring in public function
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
+
+[tool.ruff.lint.isort]
+force-single-line = false
+combine-as-imports = true
+force-sort-within-sections = true
+order-by-type = false
+lines-after-imports = 2
+
+[tool.mypy]
+exclude = ["tests", "tasks"]
+strict = true
+warn_unreachable = true
+
+[dependency-groups]
+dev = [
+    "codecov>=2.1.13",
+    "invoke>=2.2.0",
+    "mypy>=1.17.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.7",
+]
