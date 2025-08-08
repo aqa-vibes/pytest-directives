@@ -16,5 +16,5 @@ def linter(context: Context):
 
 @task
 def types(context: Context):
-    """Run mypy checks. """
+    """Run mypy checks."""
     context.run("uv run mypy")
