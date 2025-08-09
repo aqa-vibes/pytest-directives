@@ -1,5 +1,5 @@
 [project]
-version = "0.0.1"
+version = "0.0.2"
 name = "pytest-directives"
 description = "Control your tests flow"
 readme = "README.md"
@@ -79,7 +79,7 @@ order-by-type = false
 lines-after-imports = 2
 
 [tool.mypy]
-exclude = ["tests", "tasks"]
+files = ["pytest_directives"]
 strict = true
 warn_unreachable = true
 
