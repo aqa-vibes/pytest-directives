@@ -10,6 +10,6 @@ repos:
 
       - id: mypy
         name: mypy
-        entry: uv run mypy .
+        entry: uv run inv types
         language: system
         pass_filenames: false
