@@ -5,7 +5,7 @@ from typing import Callable
 
 from pytest_directives.core.abc_directive import ABCRunnable, RunResult
 from pytest_directives.core.run_strategies import ParallelRunStrategy
-from tests._core.conftest import MockRunnable, RunnableSpec
+from tests.core.conftest import MockRunnable, RunnableSpec
 
 
 def test_parallel_success(
