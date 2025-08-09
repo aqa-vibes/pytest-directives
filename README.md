@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/github/aqa-vibes/pytest-directives/graph/badge.svg?token=U1JEXELDHA)](https://codecov.io/github/aqa-vibes/pytest-directives)
 # pytest-directives
 Control your tests flow.
  
