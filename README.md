@@ -8,6 +8,65 @@ Provides `directives`, that makes process of running tests clear and controllabl
 `pip install pytest-directives`
 
 ## Example:
+#### Run your test
+1. Create test with pytest
+```python
+# test_something.py
+
+def test_something():
+    assert False, 'Some product error'
+```
+2. Describe your flow
+```python
+# simple_flow.py
+
+import asyncio
+import logging
+
+from pytest_directives import sequence
+
+import test_something
+
+
+simple_flow = sequence(test_something, )
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG, format='%(message)s',)
+    asyncio.run(
+        simple_flow.run()
+    )
+```
+3. Run as usual python code `python simple_flow.py`
+```
+Using proactor: IocpProactor
+Run test from directive PytestRunnable: C:\Users\i.kuzmenko\PycharmProjects\LOCAL\pytest-directives\test_something.py
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-8.4.1, pluggy-1.6.0 -- C:\Users\i.kuzmenko\PycharmProjects\LOCAL\pytest-directives\.venv\Scripts\python.exe
+rootdir: C:\Users\i.kuzmenko\PycharmProjects\LOCAL\pytest-directives
+configfile: pyproject.toml
+plugins: asyncio-1.1.0, cov-6.2.1
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+test_something.py::test_something FAILED                                 [100%]
+
+================================== FAILURES ===================================
+_______________________________ test_something ________________________________
+
+    def test_something():
+>       assert False, 'Some product error'
+E       AssertionError: Some product error
+E       assert False
+
+
+test_something.py:3: AssertionError
+=========================== short test summary info ===========================
+FAILED test_something.py::test_something - AssertionError: Some product error
+============================== 1 failed in 0.07s ==============================
+Errors in tests results
+```
+
+
 #### Three main directives
 ```python
 from pytest_directives import sequence, chain, parallel
@@ -91,6 +150,7 @@ smoke_flow = sequence(
 ## Features
 * Can run tests by `import` package, module, function, class or method
 * Run pytest in separate process (say no to sharing fixture) by `asyncio.create_subprocess_exec`
+* Can use `pytest.marks` / `pytest-xdist` or other as usual by using `.run(*args)` parameter
 * Combine directives and implement your tests flow as you need
 
 # Development

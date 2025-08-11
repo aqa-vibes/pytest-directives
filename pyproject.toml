@@ -1,5 +1,5 @@
 [project]
-version = "0.0.2"
+version = "0.0.3"
 name = "pytest-directives"
 description = "Control your tests flow"
 readme = "README.md"
@@ -21,6 +21,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
+    "pytest",
 ]
 
 [tool.pytest.ini_options]
@@ -89,7 +90,6 @@ dev = [
     "invoke>=2.2.0",
     "mypy>=1.17.1",
     "pre-commit>=4.2.0",
-    "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "pytest-cov>=6.2.1",
     "ruff>=0.12.7",

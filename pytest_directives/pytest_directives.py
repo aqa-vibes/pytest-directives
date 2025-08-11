@@ -9,7 +9,8 @@ import sys
 from types import FunctionType, MethodType, ModuleType
 from typing import Any, Callable, TypeAlias, Union
 
-from ._pytest_hardcode import ExitCode
+from _pytest.config import ExitCode
+
 from .core.abc_directive import (
     ABCDirective,
     ABCRunnable,

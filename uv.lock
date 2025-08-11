@@ -469,8 +469,11 @@ wheels = [
 
 [[package]]
 name = "pytest-directives"
-version = "0.0.2"
+version = "0.0.3"
 source = { virtual = "." }
+dependencies = [
+    { name = "pytest" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -478,13 +481,13 @@ dev = [
     { name = "invoke" },
     { name = "mypy" },
     { name = "pre-commit" },
-    { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "ruff" },
 ]
 
 [package.metadata]
+requires-dist = [{ name = "pytest" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -492,7 +495,6 @@ dev = [
     { name = "invoke", specifier = ">=2.2.0" },
     { name = "mypy", specifier = ">=1.17.1" },
     { name = "pre-commit", specifier = ">=4.2.0" },
-    { name = "pytest", specifier = ">=8.4.1" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-cov", specifier = ">=6.2.1" },
     { name = "ruff", specifier = ">=0.12.7" },
