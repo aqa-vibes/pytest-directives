@@ -4,6 +4,9 @@ Control your tests flow.
  
 Provides `directives`, that makes process of running tests clear and controllable.
 
+## DeepWiki documentation:
+https://deepwiki.com/aqa-vibes/pytest-directives
+
 ## Install:
 `pip install pytest-directives`
 
